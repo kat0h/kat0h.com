@@ -1,8 +1,21 @@
 <html>
+
 <head>
-<title>kat0hの館</title>
+  <title>kat0hの館</title>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="style.css">
+  <script type="text/javascript" src="script.js"></script>
 </head>
+
 <body>
-<marquee><h1>kat0hの館</h1></marquee>
+  <div id="window">
+    <iframe src="header.html" frameborder="0" height="70px"></iframe>
+    <div id="links">
+      <iframe src="links.html" frameborder="0" onload="fixLinksHeight()"></iframe>
+    </div>
+    <div id="content">
+    </div>
+  </div>
 </body>
+
 </html>
