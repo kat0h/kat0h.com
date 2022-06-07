@@ -1,104 +1,100 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
-  <head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <title> ファイルシステムの壊れたCDを復旧 </title>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="/style.css">
-  </head>
-  <body>
-    <h1>ファイルシステムの壊れたCDを復旧</h1>
-    <div align="right">更新: 2022-04-06 カウンタ: <img
-        src="http://www.rays-counter.com/d505_f6_001/623ba168c2c44/"
-        alt="アクセスカウンター"><br>
-      <br>
-      <div style="text-align: left;">先日2003年に<a
-          href="../web/web_sozai/index.html" moz-do-not-send="true">発売され
-          たWeb向け素材集を購入しました</a>が、付属してきたCDにファイルを見ることのできないものがありした。<img
-          moz-do-not-send="true" src="1.png" alt="" style="width: 377px;
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title> ファイルシステムの壊れたCDを復旧 </title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+  <h1>ファイルシステムの壊れたCDを復旧</h1>
+  <div align="right">更新: 2022-04-06 カウンタ: <img src="http://www.rays-counter.com/d505_f6_001/623ba168c2c44/"
+      alt="アクセスカウンター"><br>
+    <br>
+    <div style="text-align: left;">先日2003年に<a href="../web/web_sozai/index.html" moz-do-not-send="true">発売され
+        たWeb向け素材集を購入しました</a>が、付属してきたCDにファイルを見ることのできないものがありした。<img moz-do-not-send="true" src="1.png" alt="" style="width: 377px;
           height: 272px;" align="right"><br>
-        ルートのフォルダは見えるにも<span style="font-weight: bold;">関わらず</span>、開いたフォ
-        ルダには<span style="font-weight: bold;"><font size="+2">なにも表示されません</font></span>。<br>
-        <br>
-        CD自体のプロパティによると、7MBの使用済み領域 がありました。ここになにかのデータがありそうです。<br>
-        データ復旧ツールには無料の物から有料のものまでありますが、100円ちょっとのCDにお金をかけ
-        るのは癪なので、無料のツールを探しました。<br>
-        <br>
-        インターネットで検索した結果、今回は<a moz-do-not-send="true"
-          href="https://www.cgsecurity.org/wiki/TestDisk_Download">photorec</a>を
-        使用しました。ソースコードが公開されているファイルシステム復旧ソフトであるTestDiskに付属しているデータ復旧ツールで、写真
-        を始め とした様々なファイル形式の探索・復旧が可能なようです。<br>
-        <br>
-        今回のケースでは幸運にも<span style="font-weight: bold;">ファイルシステムのみの故障</span>で、
-        データ自体は無事保持されています。<br>
-      </div>
-      <img moz-do-not-send="true" src="2.png" alt="" style="width:
+      ルートのフォルダは見えるにも<span style="font-weight: bold;">関わらず</span>、開いたフォ
+      ルダには<span style="font-weight: bold;">
+        <font size="+2">なにも表示されません</font>
+      </span>。<br>
+      <br>
+      CD自体のプロパティによると、7MBの使用済み領域 がありました。ここになにかのデータがありそうです。<br>
+      データ復旧ツールには無料の物から有料のものまでありますが、100円ちょっとのCDにお金をかけ
+      るのは癪なので、無料のツールを探しました。<br>
+      <br>
+      インターネットで検索した結果、今回は<a moz-do-not-send="true" href="https://www.cgsecurity.org/wiki/TestDisk_Download">photorec</a>を
+      使用しました。ソースコードが公開されているファイルシステム復旧ソフトであるTestDiskに付属しているデータ復旧ツールで、写真
+      を始め とした様々なファイル形式の探索・復旧が可能なようです。<br>
+      <br>
+      今回のケースでは幸運にも<span style="font-weight: bold;">ファイルシステムのみの故障</span>で、
+      データ自体は無事保持されています。<br>
+    </div>
+    <img moz-do-not-send="true" src="2.png" alt="" style="width:
         211px; height: 275px;" align="right">
-      <div style="text-align: left;">photorecは基本的にcmd.exe上で動かすアプリケーションです
-        が、qt GUIも付属しているのでこちらを使用しました。<br>
-        <div style="text-align: left;"><img moz-do-not-send="true"
-            src="3.png" alt="" style=" width: 315px; height: 372px;"
-            align="left"><br>
-        </div>
-      </div>
-      <div style="text-align: left;">qphotorec_win.exeを起動すると右のようなGUIが開きま
-        す。<br>
-        ここで復旧したディスクドライブとファイルシステムの種類・探索するファイルのフォーマットを指定します。<br>
-        photorecは探索で見付かったデータをすぐにHDDに書き出します。書き出し先を指定することになりますが、<br>
-        エラーを吐いてしまうので、<span style="font-weight: bold;">パスに英語以外が入ったフォルダ
-          を指定しない</span>ようにしましょう。<br>
-        ユーザー名に日本語が入っているときは <span style="font-style: italic;"><font
-            size="-1">C:Users/Shared ? </font>を指定するのがオススメです。<br>
-          <br>
-        </span>Photorecは様々なファイル形
-        式の復旧に対応しますが、こんかい欲しいファイルはGIFファイルのみなのでGIFのみを指定しました。<br>
-        <br>
-        <img moz-do-not-send="true" src="5.png" alt="" style=" width:
-          299px; height: 338px;" align="right">検索ボタンを押すとすぐにファイル探索がはじまりま
-        す。今回の場合は数分で処理が終わりました。<br>
-        <br>
-        <span style="font-style: italic;"><img moz-do-not-send="true"
-            src="4.png" alt="" style=" width: 280px; height: 277px;"
-            align="left"></span><br>
-        <br>
-        <br>
-        <br>
-        結果ほとんどのファイルをCDから読み出すことができましたが、なぜか重複するファイルが40000個ほど作成されてしまいまし た。<br>
-        それぞれのファイルは一致するのでハッシュ値を計算して重複を弾いてやります。<br>
-        シェル芸をしてもいいのですが、今回はWindowsで作業しているので<font size="-1">(実はこのときMacにCDを
-          繋いだところなぜかMacOSが破壊されそちらの復旧も同時平行でやっていました(´･_･`))</font><a
-          moz-do-not-send="true"
-          href="https://forest.watch.impress.co.jp/library/software/filemany/">FileMany</a>を
-        つかうことにします。<br>
-        <br>
-        <img moz-do-not-send="true" src="6.png" alt="" style="width:
-          535px; height: 383px;" align="left"><br>
-        初回の起動時に<font size="+2"><span style="font-weight: bold;"><span
-              style="color: rgb(255, 0, 0);">広告表示型ウイルスの宣伝</span></span></font>が
-        入るので間違えてインストールしないようにしましょう(この広告がFilemanyの開発資金になります)。<font
-          size="-1">GMOはいい加減狡い商売をやめたほうがいいとおもいます。</font><br>
-        <br>
-        <span style="font-style: italic;"></span>Photorecは500ファイルごとにフォルダ
-        を生成します。重複を削除したら、エクスプローラーで <font size="+1"><span
-            style="font-weight: bold;">NOT kind:folder </span></font>を検
-        索<img moz-do-not-send="true" src="7.png" alt="" style="width:
-          286px; height: 466px;" align="right"><br>
+    <div style="text-align: left;">photorecは基本的にcmd.exe上で動かすアプリケーションです
+      が、qt GUIも付属しているのでこちらを使用しました。<br>
+      <div style="text-align: left;"><img moz-do-not-send="true" src="3.png" alt=""
+          style=" width: 315px; height: 372px;" align="left"><br>
       </div>
     </div>
-    してファイルを一箇所にコピーしたら完成です。<br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <span style="font-style: italic;"><span style="font-weight: bold;"><font
-          size="+2">おめでとうございました ファイルは復旧されました。</font></span></span><br>
-    <center><a href="javascript:history.back()"><img
-          src="/img/button/back.gif" alt="back"></a> <a
-        href="/index.html"><img src="/img/button/home.gif" alt="home"></a>
-    </center>
-  </body>
+    <div style="text-align: left;">qphotorec_win.exeを起動すると右のようなGUIが開きま
+      す。<br>
+      ここで復旧したディスクドライブとファイルシステムの種類・探索するファイルのフォーマットを指定します。<br>
+      photorecは探索で見付かったデータをすぐにHDDに書き出します。書き出し先を指定することになりますが、<br>
+      エラーを吐いてしまうので、<span style="font-weight: bold;">パスに英語以外が入ったフォルダ
+        を指定しない</span>ようにしましょう。<br>
+      ユーザー名に日本語が入っているときは <span style="font-style: italic;">
+        <font size="-1">C:Users/Shared ? </font>を指定するのがオススメです。<br>
+        <br>
+      </span>Photorecは様々なファイル形
+      式の復旧に対応しますが、こんかい欲しいファイルはGIFファイルのみなのでGIFのみを指定しました。<br>
+      <br>
+      <img moz-do-not-send="true" src="5.png" alt="" style=" width:
+          299px; height: 338px;" align="right">検索ボタンを押すとすぐにファイル探索がはじまりま
+      す。今回の場合は数分で処理が終わりました。<br>
+      <br>
+      <span style="font-style: italic;"><img moz-do-not-send="true" src="4.png" alt=""
+          style=" width: 280px; height: 277px;" align="left"></span><br>
+      <br>
+      <br>
+      <br>
+      結果ほとんどのファイルをCDから読み出すことができましたが、なぜか重複するファイルが40000個ほど作成されてしまいまし た。<br>
+      それぞれのファイルは一致するのでハッシュ値を計算して重複を弾いてやります。<br>
+      シェル芸をしてもいいのですが、今回はWindowsで作業しているので<font size="-1">(実はこのときMacにCDを
+        繋いだところなぜかMacOSが破壊されそちらの復旧も同時平行でやっていました(´･_･`))</font><a moz-do-not-send="true"
+        href="https://forest.watch.impress.co.jp/library/software/filemany/">FileMany</a>を
+      つかうことにします。<br>
+      <br>
+      <img moz-do-not-send="true" src="6.png" alt="" style="width:
+          535px; height: 383px;" align="left"><br>
+      初回の起動時に<font size="+2"><span style="font-weight: bold;"><span
+            style="color: rgb(255, 0, 0);">広告表示型ウイルスの宣伝</span></span></font>が
+      入るので間違えてインストールしないようにしましょう(この広告がFilemanyの開発資金になります)。<font size="-1">GMOはいい加減狡い商売をやめたほうがいいとおもいます。</font><br>
+      <br>
+      <span style="font-style: italic;"></span>Photorecは500ファイルごとにフォルダ
+      を生成します。重複を削除したら、エクスプローラーで <font size="+1"><span style="font-weight: bold;">NOT kind:folder </span></font>を検
+      索<img moz-do-not-send="true" src="7.png" alt="" style="width:
+          286px; height: 466px;" align="right"><br>
+    </div>
+  </div>
+  してファイルを一箇所にコピーしたら完成です。<br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <span style="font-style: italic;"><span style="font-weight: bold;">
+      <font size="+2">おめでとうございました ファイルは復旧されました。</font>
+    </span></span><br>
+  <center><a href="javascript:history.back()"><img src="/img/button/back.gif" alt="back"></a> <a href="/index.html"><img
+        src="/img/button/home.gif" alt="home"></a>
+  </center>
+</body>
+
 </html>
