@@ -1,0 +1,93 @@
+<html>
+
+<head>
+	<title>
+    Bison/Flex入門
+	</title>
+	<meta charset="utf-8" />
+	<link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+	<h1>Bison/Flex</h1>
+
+  <h2>はじめに</h2>
+  Bison/FlexはUNIXでプログラム言語を作成する際などに利用されるコンパイラコンパイラの一種です。
+  このエントリーではBison/Flexを使う上でわかりにくい点や概念などを解説します。
+  間違い・改善点などありましたら、Twitterまたはトップページのメールアドレスに報告下さい。
+
+  <h2>概念</h2>
+  Bison(yacc)/Flex(lex)が具体的にどのような動作をするのかを説明します。
+  この項ではオートマトンの概念を軽く理解していることを前提に解説します。
+
+  <h3>Flex</h3>
+  Flexはソースコードを入力に取り、文字列を意味のあるかたまりであるトークンに分割します。
+  下記に四則演算(カッコなし)をスキャンするLexプログラムを引用します。%%で区切られた範囲がスキャンのためのルールになります。
+  コードのライセンス： http://kmaebashi.com/programmer/devlang/license.html
+
+<code>
+%{
+#include <stdio.h>
+#include "y.tab.h"
+
+int
+yywrap(void)
+{
+    return 1;
+}
+%}
+%%
+"+"		return ADD;
+"-"		return SUB;
+"*"		return MUL;
+"/"		return DIV;
+"\n"		return CR;
+[1-9][0-9]* {
+    double temp;
+    sscanf(yytext, "%lf", &temp);
+    yylval.double_value = temp;
+    return DOUBLE_LITERAL;
+}
+[0-9]*\.[0-9]* {
+    double temp;
+    sscanf(yytext, "%lf", &temp);
+    yylval.double_value = temp;
+    return DOUBLE_LITERAL;
+}
+%%
+</code>
+
+  コードをオートマトン(正確な定義の通りではありませんが)に書き起こすと図のようになります。
+  一つの状態に全てのルール定義されていることが分かります。
+  Lexではスタート状態という概念があり、コード内で切り替える状態によって有効・無効を切り替えるルールを作成することが可能になります。
+
+  では、Cの文字列リテラルのようなトークンをスキャンするにはどのようなルールを定義すれば良いのでしょうか。
+  例えば、文字列リテラルの中では\から始まる文字は特殊な文字として解釈されます。全てを一つの状態の元定義することは困難です。
+
+  ここで利用できるのが、POSIXで定義されFlexで実装されている排他的スタート状態です。
+  排他的スタート状態はスキャナに新しい状態を作成し、入力を処理します。
+
+  下のリンク先のコードはC言語風の文字列リテラルをパースするコードです。
+  https://www.asahi-net.or.jp/~wg5k-ickw/html/online/flex-2.3.7/flex_11.html#SEC58
+  このコードを描いたものが下の図です。
+
+  これでも処理できないコードはinput()・yymore()・yyless()関数を使って処理を記述してください。
+  下記ドキュメントが役に立つでしょう。
+  https://www.asahi-net.or.jp/~wg5k-ickw/html/online/flex-2.3.7/flex_6.html
+
+  <h2>Bison</h2>
+  Bisonはyaccの上位互換であるパーサジェネレーターです。
+  Bisonの元となったyaccはlexと同時に使用することが想定されており、それぞれの出力するプログラムがどのように連携しているかを把握することが重要になります。
+
+
+
+
+
+	<div align="right">更新: カウンタ: <img src="http://www.rays-counter.com/d505_f6_001/623ba168c2c44/" alt="アクセスカウンター"></div>
+	<center>
+		<a href="javascript:history.back()"><img src="/img/button/back.gif" alt="back"></a>
+		<a href="/index.html"><img src="/img/button/home.gif" alt="home"></a>
+	</center>
+</body>
+
+</html>
