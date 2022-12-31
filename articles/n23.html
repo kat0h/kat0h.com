@@ -9,8 +9,64 @@
 </head>
 
 <body>
-  <h1>Title</h1>
-  <div align="right">更新: 2023-01-01 カウンタ: <img src="http://www.rays-counter.com/d505_f6_001/623ba168c2c44/" alt="アクセスカウンター"></div>
+  <center>
+    <h1>2023年 年賀状</h1>
+  </center>
+  <div align="right">更新: 2023-01-01 カウンタ: <img src="http://www.rays-counter.com/d505_f6_001/623ba168c2c44/"
+      alt="アクセスカウンター"></div>
+  <center>
+    <img src="./asset/nenga.jpg" width="70%"><br><br><br>
+    動作させた様子<br>
+    <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/QbDuaQmvNWc"
+      title="YouTube video player" frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen></iframe>
+  </center>
+  <center>
+    <h1>使い方</h1>
+  </center>
+  <p>
+  <ul>
+    <li>Rubyと<code>/dev/dsp</code>に依存しています<ul>
+        <li>Linuxの場合はosspdパッケージをインストールするか、PulseAudio付属のpadspコマンドを使ってください</li>
+        <li>Macの場合gemコマンドでosxdspをインストール後、<code>alias ruby=&quot;ruby -rosxdsp</code>を実行してください。</li>
+      </ul>
+    </li>
+  </ul><br><br>
+  <details>
+    <summary>仕組み</summary>
+    <img src="./asset/nenga_2.png" alt="仕組み" width="500px"><br>
+    コードは大きく3つのパートに分かれています。<br>
+    赤い部分はお正月の歌を再生するコードです。内部で8bit/8000Hzの波形を生成しています。<br>
+    青い部分はAAのデータファイルと再生コードです。gzip圧縮後Base64エンコードしてあります。<br>
+    緑の部分はQuineとしてプログラム自身を出力するコードです。<br>
+  </details><br><br>
+
+    <pre><code>
+    <span class="hljs-variable">$s</span>="<span class="hljs-keyword">if</span>(STDOUT.isatty);<span class="hljs-keyword">m</span>=Thread.new{<span class="hljs-keyword">d</span>=%[6868ada8868a66331116688a0aa8
+    666688aad06868adaa88a8682222222211242211111111211221111211111182222
+    4221124].<span class="hljs-keyword">split</span>(<span class="hljs-comment">//).map{|a|a.to_i(14)};t=d.map{|t|t==0?1:(185*2**(t/</span>
+    12.0))};f=652;w=[];&gt;                           &lt;51.times{|i|w+=(0..
+    .f*4*<span class="hljs-keyword">d</span>[-i-1]-f).map&gt; █▀▀▀▀▀█  █  █▄█ █ █▀▀▀▀▀█ &lt;{|<span class="hljs-keyword">n</span>|Math.<span class="hljs-built_in">sin</span>(3.14*<span class="hljs-keyword">n</span>
+    <span class="hljs-comment">*t[i]/4000)}+(0...f&gt; █ ███ █ ▄██▀▀▄▀██ █ ███ █ &lt;).map{0}};w.map!{|v</span>
+    |(128+90*v).round};&gt; █ ▀▀▀ █ ▀▄▄▀█   █ █ ▀▀▀ █ &lt;<span class="hljs-keyword">open</span>(%[/dev/dsp],%[
+    wb]){|f|f.<span class="hljs-keyword">print</span>(w.p&gt; ▀▀▀▀▀▀▀ ▀ █▄▀ █▄█ ▀▀▀▀▀▀▀ &lt;ack(%[C*]))}};<span class="hljs-keyword">print</span>
+    (%(\<span class="hljs-keyword">e</span>[0;0H\<span class="hljs-keyword">e</span>[2J));r&gt; ▀█▄  ▀▀█ █▄█▀▀▀▄   ▄██▄▄  &lt;equire(%(zlib));s=[
+    Zlib::Inflate.infla&gt; ▄▄▀█▀ ▀▀ ▄▀▄ ▀ █▀▄█▀██ ▀█ &lt;<span class="hljs-keyword">te</span>(%(eNqNkrENAzEIRX
+    tPcV26eALWSIXEIuyQh&gt; ▄█ ▄  ▀█▄█ ▄█ ▄██▄▀█   ▄▀ &lt;djpVojvAAsrhoQKW/+B
+    4bu1Iw8+RagUAMDQFJI&gt; █ █ ▄█▀▄▄▀▀▄▄ ██ ▀██▀█▄▀█ &lt;Od7CfyeOZQqe8FRqJAv
+    MGyn4reCB8BW7IUH4kZ&gt; ▀  ▀  ▀ ▄▄▄▄ █▀ █▀▀▀█ ▀   &lt;JVklvER+oZFfY+pLLuW
+    gp4koD4OXXST7HvqOTZ&gt; █▀▀▀▀▀█ █ ▀▀ ▀█ █ ▀ █  ▄▀ &lt;F7HtdL3IIx6BW2KoQaa
+    ecgZcvjmfHH22CxtpgQ&gt; █ ███ █   █▄▀▀█▀█▀█▀▀ ▀█▄ &lt;ZhFnSFMwS1xV9SSf8Tx
+    Q6iNnPm/0ZoDaW37MI8&gt; █ ▀▀▀ █ ▄ ▀ ▀▀▄▀█▀▄▄▄▀▀ █ &lt;4RPmQdYqBt/YBTrTJig
+    ==).unpack(%(<span class="hljs-keyword">m</span>))[0]&gt; ▀▀▀▀▀▀▀ ▀   ▀   ▀▀▀  ▀  ▀ &lt;)];s.push(s[0].gsub
+    (/=/,%(_)));c=0;loo&gt;        2023@kat0h         &lt;p{%(KK);<span class="hljs-keyword">print</span>(%(\<span class="hljs-keyword">e</span>[
+    0;0H),s[(c+=1)%2]);puts(%(  )*12+%(Happy New Year 2023 !!!));<span class="hljs-keyword">sleep</span>(
+    0.5);<span class="hljs-keyword">if</span>(!<span class="hljs-keyword">m</span>.status);<span class="hljs-keyword">break</span>;end};<span class="hljs-keyword">print</span>(%(\<span class="hljs-keyword">e</span>[0;0H\<span class="hljs-keyword">e</span>[2J))end;puts(%(<span class="hljs-variable">$s</span>=)
+    +<span class="hljs-variable">$s</span>.<span class="hljs-keyword">inspect</span>.gsub(92.chr+110.chr,10.chr)+%(;eval<span class="hljs-variable">$s</span>.gsub(/&gt;.{27}&lt;/,%(
+    )).gsub(10.chr,%())));";eval<span class="hljs-variable">$s</span>.gsub(/&gt;.{27}&lt;/,%()).gsub(10.chr,%())
+    </code></pre>
+  </p>
   <center>
     <a href="javascript:history.back()"><img src="/img/button/back.gif" alt="back"></a>
     <a href="/index.html"><img src="/img/button/home.gif" alt="home"></a>
