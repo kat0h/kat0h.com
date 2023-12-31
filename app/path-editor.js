@@ -30,6 +30,7 @@ let mode = "";
 let movestate = "";
 let movingpoint = undefined;
 let mousepos = [0, 0];
+let mouseposd = [0, 0];
 
 const isWithinRange = (value, value2, error) => {
   return value2[0] - error <= value[0] && value2[0] + error >= value[0] &&
@@ -42,6 +43,7 @@ const MinOrInf = (ary) =>
 const findMinIndex = (ary) =>
   ary.length == 0 ? -1 : ary.indexOf(ary.reduce((a, b) => Math.min(a, b)));
 const arrayEqual = (arr1, arr2) => JSON.stringify(arr1) == JSON.stringify(arr2);
+const pathIsClosed = (p) => arrayEqual(p[0], p[p.length - 1]);
 
 const findNearestPoint = (point) => {
   const len = paths.map((path) => path.map((p) => distance(p, point)));
@@ -92,12 +94,17 @@ canvas.addEventListener("mouseup", (e) => {
 canvas.addEventListener("mousemove", (e) => {
   state = "mousemove";
   mousepos = [e.offsetX, e.offsetY];
+  mouseposd = [e.movementX, e.movementY];
   if (mode == "draw") {
   } else if (mode == "move") {
     if (movestate == "down" && movingpoint != undefined) {
-      paths[movingpoint[0]][movingpoint[1]] = mousepos;
+      paths[movingpoint[0]][movingpoint[1]][0] += mouseposd[0];
+      paths[movingpoint[0]][movingpoint[1]][1] += mouseposd[1];
       if (movingpoint[1] == 0) {
-        paths[movingpoint[0]][paths[movingpoint[0]].length - 1] = mousepos;
+        paths[movingpoint[0]][paths[movingpoint[0]].length - 1][0] +=
+          mouseposd[0];
+        paths[movingpoint[0]][paths[movingpoint[0]].length - 1][1] +=
+          mouseposd[1];
       }
     }
   }
@@ -121,9 +128,11 @@ const changeMode = (newMode) => {
   }
   if (newMode == "draw") {
     mode = "draw";
+    canvas.style.cursor = "default";
   } else if (newMode == "move") {
     mode = "move";
     movestate = "up";
+    canvas.style.cursor = "move";
   }
   document.getElementById("mode").innerHTML = mode;
   updateCanvas();
@@ -163,7 +172,7 @@ const updateCanvas = () => {
       ctx.lineTo(...path[i]);
     }
     // 最初の要素と最後の要素が一致していたらパスを閉じる
-    if (arrayEqual(path[0], path[path.length - 1])) {
+    if (pathIsClosed(path)) {
       ctx.closePath();
     }
     if (state == "mousemove" && mode == "draw" && i == paths.length - 1) {
@@ -171,6 +180,8 @@ const updateCanvas = () => {
     }
   });
   ctx.stroke();
+
+  // test
 
   document.getElementById("log").innerHTML = `${JSON.stringify(paths)}`;
 };
