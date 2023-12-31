@@ -23,6 +23,12 @@ canvas.height = canvas_height;
 canvas.width = canvas_width;
 
 let state = "none";
+/*
+ * draw, move
+ */
+let mode = "";
+let movestate = "";
+let movingpoint = undefined;
 let mousepos = [0, 0];
 
 const isWithinRange = (value, value2, error) => {
@@ -50,8 +56,7 @@ const findNearestPoint = (point) => {
   return [r1, r2];
 };
 
-canvas.addEventListener("mousedown", (e) => {
-  state = "mousedown";
+const mousedownDraw = (e) => {
   if (
     paths[paths.length - 1].length > 2 &&
     isWithinRange([e.offsetX, e.offsetY], paths[paths.length - 1][0], rectSize)
@@ -61,13 +66,41 @@ canvas.addEventListener("mousedown", (e) => {
   } else {
     paths[paths.length - 1].push([e.offsetX, e.offsetY]);
   }
+};
+
+canvas.addEventListener("mousedown", (e) => {
+  if (mode == "draw") {
+    mousedownDraw(e);
+  } else if (mode == "move") {
+    movestate = "down";
+    const near = findNearestPoint(mousepos);
+    // 動かせる点がある
+    if (near[0] != -1 && near[1] != -1) {
+      movingpoint = near;
+    }
+  }
   updateCanvas();
+});
+
+canvas.addEventListener("mouseup", (e) => {
+  if (mode == "move") {
+    movestate = "up";
+    movingpoint = undefined;
+  }
 });
 
 canvas.addEventListener("mousemove", (e) => {
   state = "mousemove";
   mousepos = [e.offsetX, e.offsetY];
-  findNearestPoint(mousepos);
+  if (mode == "draw") {
+  } else if (mode == "move") {
+    if (movestate == "down" && movingpoint != undefined) {
+      paths[movingpoint[0]][movingpoint[1]] = mousepos;
+      if (movingpoint[1] == 0) {
+        paths[movingpoint[0]][paths[movingpoint[0]].length - 1] = mousepos;
+      }
+    }
+  }
   updateCanvas();
 });
 
@@ -76,9 +109,23 @@ const clearCanvas = () => {
 };
 
 const nextSubPath = () => {
-  if (paths[paths.length - 1].length > 2) {
+  if (paths[paths.length - 1].length > 1) {
     paths.push([]);
   }
+  updateCanvas();
+};
+
+const changeMode = (newMode) => {
+  if (mode == newMode) {
+    return;
+  }
+  if (newMode == "draw") {
+    mode = "draw";
+  } else if (newMode == "move") {
+    mode = "move";
+    movestate = "up";
+  }
+  document.getElementById("mode").innerHTML = mode;
   updateCanvas();
 };
 
@@ -119,7 +166,7 @@ const updateCanvas = () => {
     if (arrayEqual(path[0], path[path.length - 1])) {
       ctx.closePath();
     }
-    if (state == "mousemove" && i == paths.length - 1) {
+    if (state == "mousemove" && mode == "draw" && i == paths.length - 1) {
       ctx.lineTo(...mousepos);
     }
   });
@@ -128,5 +175,6 @@ const updateCanvas = () => {
   document.getElementById("log").innerHTML = `${JSON.stringify(paths)}`;
 };
 
+changeMode("draw");
 nextSubPath();
 updateCanvas();
