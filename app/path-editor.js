@@ -38,7 +38,7 @@ const isWithinRange = (value, value2, error) => {
 };
 
 const distance = (p1, p2) => ((p1[0] - p2[0]) ** 2 + (p1[1] - p2[1]) ** 2);
-const MinOrInf = (ary) =>
+const minOrInf = (ary) =>
   ary.length == 0 ? Infinity : ary.reduce((a, b) => Math.min(a, b));
 const findMinIndex = (ary) =>
   ary.length == 0 ? -1 : ary.indexOf(ary.reduce((a, b) => Math.min(a, b)));
@@ -51,7 +51,7 @@ const findNearestPoint = (point) => {
     if (l.length == 0) {
       return Infinity;
     } else {
-      return MinOrInf(l);
+      return minOrInf(l);
     }
   }));
   const r2 = r1 == -1 ? -1 : findMinIndex(len[r1]);
@@ -63,7 +63,7 @@ const mousedownDraw = (e) => {
     paths[paths.length - 1].length > 2 &&
     isWithinRange([e.offsetX, e.offsetY], paths[paths.length - 1][0], rectSize)
   ) {
-    paths[paths.length - 1].push([...paths[paths.length - 1][0]]);
+    paths[paths.length - 1].push(paths[paths.length - 1][0]);
     nextSubPath();
   } else {
     paths[paths.length - 1].push([e.offsetX, e.offsetY]);
@@ -79,6 +79,24 @@ canvas.addEventListener("mousedown", (e) => {
     // 動かせる点がある
     if (near[0] != -1 && near[1] != -1) {
       movingpoint = near;
+    }
+  } else if (mode == "delete") {
+    const near = findNearestPoint(mousepos);
+    // 消せる点がある
+    if (near[0] != -1 && near[1] != -1) {
+      const p = paths[near[0]];
+      if (pathIsClosed(paths[near[0]]) && near[1] == 0) {
+        p.splice(0, 1);
+        p.splice(p.length - 1, 1);
+        if (p.length > 2) {
+          p.push([...p[0]]);
+        }
+      } else {
+        p.splice(near[1], 1);
+      }
+      if (p.length < 2 || (p.length == 2 && pathIsClosed(p))) {
+        paths.splice(near[0], 1);
+      }
     }
   }
   updateCanvas();
@@ -98,14 +116,9 @@ canvas.addEventListener("mousemove", (e) => {
   if (mode == "draw") {
   } else if (mode == "move") {
     if (movestate == "down" && movingpoint != undefined) {
-      paths[movingpoint[0]][movingpoint[1]][0] += mouseposd[0];
-      paths[movingpoint[0]][movingpoint[1]][1] += mouseposd[1];
-      if (movingpoint[1] == 0) {
-        paths[movingpoint[0]][paths[movingpoint[0]].length - 1][0] +=
-          mouseposd[0];
-        paths[movingpoint[0]][paths[movingpoint[0]].length - 1][1] +=
-          mouseposd[1];
-      }
+      const p = paths[movingpoint[0]];
+      p[movingpoint[1]][0] += mouseposd[0];
+      p[movingpoint[1]][1] += mouseposd[1];
     }
   }
   updateCanvas();
@@ -133,6 +146,9 @@ const changeMode = (newMode) => {
     mode = "move";
     movestate = "up";
     canvas.style.cursor = "move";
+  } else if (newMode == "delete") {
+    mode = "delete";
+    canvas.style.cursor = "default";
   }
   document.getElementById("mode").innerHTML = mode;
   updateCanvas();
@@ -182,6 +198,35 @@ const updateCanvas = () => {
   ctx.stroke();
 
   // test
+  if (mode == "move") {
+    const liness = paths.map((path) => {
+      if (path.length < 2) {
+        return [];
+      }
+      const ret = [];
+      for (let i = 0; i < path.length - 1; i++) {
+        const a = path[i];
+        const b = path[i + 1];
+        ret.push([
+          (b[1] - a[1]) / (b[0] - a[0]),
+          -1,
+          a[1] - (b[1] - a[1]) / (b[0] - a[0]) * a[0],
+        ]);
+      }
+      return ret;
+    });
+    const distance = liness.map((lines) =>
+      lines.map((line) =>
+        Math.abs(line[0] * mousepos[0] + line[1] * mousepos[1] + line[2]) /
+        Math.sqrt(line[0] ** 2 + line[1] ** 2)
+      )
+    );
+    if (minOrInf(distance.flat(1 / 0)) <= 5) {
+      canvas.style.cursor = "pointer";
+    } else {
+      canvas.style.cursor = "move";
+    }
+  }
 
   document.getElementById("log").innerHTML = `${JSON.stringify(paths)}`;
 };
