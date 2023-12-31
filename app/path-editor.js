@@ -10,7 +10,7 @@
 
 const canvas_height = 300;
 const canvas_width = 300;
-const rectSize = 4;
+const rectSize = 5;
 
 const canvas = document.getElementById("c");
 const ctx = canvas.getContext("2d");
@@ -43,7 +43,7 @@ const minOrInf = (ary) =>
 const findMinIndex = (ary) =>
   ary.length == 0 ? -1 : ary.indexOf(ary.reduce((a, b) => Math.min(a, b)));
 const arrayEqual = (arr1, arr2) => JSON.stringify(arr1) == JSON.stringify(arr2);
-const pathIsClosed = (p) => arrayEqual(p[0], p[p.length - 1]);
+const pathIsClosed = (p) => p[0] == p[p.length - 1];
 
 const findNearestPoint = (point) => {
   const len = paths.map((path) => path.map((p) => distance(p, point)));
@@ -70,6 +70,32 @@ const mousedownDraw = (e) => {
   }
 };
 
+const mousedownDelete = () => {
+  const near = findNearestPoint(mousepos);
+  // 消せる点がある
+  if (
+    near[0] != -1 && near[1] != -1 &&
+    isWithinRange(paths[near[0]][near[1]], mousepos, rectSize)
+  ) {
+    const p = paths[near[0]];
+    if (pathIsClosed(paths[near[0]]) && near[1] == 0) {
+      p.splice(0, 1);
+      p.splice(p.length - 1, 1);
+      if (p.length > 2) {
+        p.push(p[0]);
+      }
+    } else {
+      p.splice(near[1], 1);
+      if (p.length == 3 && pathIsClosed) {
+        p.splice(0, 1);
+      }
+    }
+    if (p.length < 2 || (p.length == 2 && pathIsClosed(p))) {
+      paths.splice(near[0], 1);
+    }
+  }
+};
+
 canvas.addEventListener("mousedown", (e) => {
   if (mode == "draw") {
     mousedownDraw(e);
@@ -77,27 +103,43 @@ canvas.addEventListener("mousedown", (e) => {
     movestate = "down";
     const near = findNearestPoint(mousepos);
     // 動かせる点がある
-    if (near[0] != -1 && near[1] != -1) {
+    if (
+      isWithinRange(paths[near[0]][near[1]], mousepos, rectSize) &&
+      near[0] != -1 && near[1] != -1
+    ) {
       movingpoint = near;
+    } else {
+      // 点の追加
+      const liness = paths.map((path) => {
+        if (path.length < 2) {
+          return [];
+        }
+        const ret = [];
+        for (let i = 0; i < path.length - 1; i++) {
+          const a = path[i];
+          const b = path[i + 1];
+          ret.push([
+            (b[1] - a[1]) / (b[0] - a[0]),
+            -1,
+            a[1] - (b[1] - a[1]) / (b[0] - a[0]) * a[0],
+          ]);
+        }
+        return ret;
+      });
+      const distance = liness.map((lines) =>
+        lines.map((line) =>
+          Math.abs(line[0] * mousepos[0] + line[1] * mousepos[1] + line[2]) /
+          Math.sqrt(line[0] ** 2 + line[1] ** 2)
+        )
+      );
+      const r1 = findMinIndex(distance.map((d) => minOrInf(d)));
+      const r2 = r1 == -1 ? -1 : findMinIndex(distance[r1]);
+      if (r1 != -1 && r2 != -1 && distance[r1][r2] <= 5) {
+        paths[r1].splice(r2 + 1, 0, [...mousepos]);
+      }
     }
   } else if (mode == "delete") {
-    const near = findNearestPoint(mousepos);
-    // 消せる点がある
-    if (near[0] != -1 && near[1] != -1) {
-      const p = paths[near[0]];
-      if (pathIsClosed(paths[near[0]]) && near[1] == 0) {
-        p.splice(0, 1);
-        p.splice(p.length - 1, 1);
-        if (p.length > 2) {
-          p.push([...p[0]]);
-        }
-      } else {
-        p.splice(near[1], 1);
-      }
-      if (p.length < 2 || (p.length == 2 && pathIsClosed(p))) {
-        paths.splice(near[0], 1);
-      }
-    }
+    mousedownDelete();
   }
   updateCanvas();
 });
@@ -117,8 +159,8 @@ canvas.addEventListener("mousemove", (e) => {
   } else if (mode == "move") {
     if (movestate == "down" && movingpoint != undefined) {
       const p = paths[movingpoint[0]];
-      p[movingpoint[1]][0] += mouseposd[0];
-      p[movingpoint[1]][1] += mouseposd[1];
+      p[movingpoint[1]][0] = mousepos[0];
+      p[movingpoint[1]][1] = mousepos[1];
     }
   }
   updateCanvas();
@@ -139,13 +181,16 @@ const changeMode = (newMode) => {
   if (mode == newMode) {
     return;
   }
+  if (paths[paths.length - 1].length == 1) {
+    paths[paths.length - 1] = [];
+  }
   if (newMode == "draw") {
     mode = "draw";
     canvas.style.cursor = "default";
   } else if (newMode == "move") {
     mode = "move";
     movestate = "up";
-    canvas.style.cursor = "move";
+    canvas.style.cursor = "defaut";
   } else if (newMode == "delete") {
     mode = "delete";
     canvas.style.cursor = "default";
@@ -168,7 +213,11 @@ const updateCanvas = () => {
     // draw rectangle
     path.forEach((pos, j) => {
       if (i == nearP[0] && j == nearP[1]) {
-        ctx.strokeStyle = "red";
+        if (isWithinRange(paths[nearP[0]][nearP[1]], mousepos, rectSize)) {
+          ctx.strokeStyle = "blue";
+        } else {
+          ctx.strokeStyle = "red";
+        }
       }
       if (j == 0 || !arrayEqual(path[0], path[j])) {
         ctx.strokeRect(
@@ -224,7 +273,7 @@ const updateCanvas = () => {
     if (minOrInf(distance.flat(1 / 0)) <= 5) {
       canvas.style.cursor = "pointer";
     } else {
-      canvas.style.cursor = "move";
+      canvas.style.cursor = "default";
     }
   }
 
