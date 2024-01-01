@@ -1,38 +1,75 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 
-<head>
-  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  <title> かとうのHomePage </title>
-  <meta charset="UTF-8">
-  <link rel="stylesheet" href="style.css">
-  <script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3214412309401215"
-    crossorigin="anonymous"></script>
-</head>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title> かとうのHomePage </title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3214412309401215"
+                     crossorigin="anonymous"></script>
+    <style>
+      @keyframes rotate {
+        0% {
+          transform: rotateY(0deg)
+        }
+        100% {
+          transform: rotateY(360deg)
+        }
+      }
+      #rotating {
+        animation-name: rotate;
+        animation-duration: 1s;
+        animation-iteration-count: infinite;
+      }
+      @keyframes rotate2 {
+        0% {
+          transform: rotate(0deg)
+        }
+        100% {
+          transform: rotate(360deg)
+        }
+      }
+      #rotating2 {
+        animation-name: rotate2;
+        animation-duration: 1s;
+        animation-iteration-count: infinite;
+      }
+      #linkcard {
+        height: 80px;
+      }
+    </style>
+  </head>
 
-<body>
-  <!-- ヘッダー -->
-  <div>
-    <header>
-      <center>
-        <!-- ヘッダ画像 -->
-        <div style="overflow-x: scroll;">
-          <table style="table-layout: fixed;">
-            <tbody>
-              <tr>
-                <td><img src="/img/top/i-may009.gif" alt="" style="transform: scale(1, 1);"></td>
-                <td><a href="/"><img src="/img/header.gif" alt="タイトル画像" border="1" height="100"></a></td>
-                <td><img src="/img/top/i-may009.gif" alt=""></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <img src="/img/top/kinga.gif"><br>
-        <!-- アクセスカウンタ --> あなたは<img src="http://www.rays-counter.com/d505_f6_001/623ba168c2c44/" alt="アクセスカウンター">番目の訪問者です
-      </center>
-      <!-- 最終更新 -->
-      <center>
-        <marquee>
+  <body>
+    <!-- ヘッダー -->
+    <div>
+      <header>
+        <center>
+          <!-- ヘッダ画像 -->
+          <div style="overflow-x: scroll;">
+            <table style="table-layout: fixed;">
+              <tbody>
+                <tr>
+                  <td><img src="/img/top/i-may009.gif" alt="" id="rotating"></td>
+                  <td><img src="/img/top/i-may009.gif" alt=""></td>
+                  <td><a href="/"><img src="/img/header.gif" alt="タイトル画像" border="1" height="100"></a></td>
+                  <td><img src="/img/top/i-may009.gif" alt=""></td>
+                  <td><img src="/img/top/i-may009.gif" alt="" id="rotating"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <td><img src="/img/top/i-may009.gif" alt=""></td>
+          <td><img src="/img/top/i-may009.gif" alt=""></td>
+          <img src="/img/top/kinga.gif" id="rotating2">
+          <td><img src="/img/top/i-may009.gif" alt=""></td>
+          <td><img src="/img/top/i-may009.gif" alt=""></td><br>
+          <!-- アクセスカウンタ --> あなたは<img src="http://www.rays-counter.com/d505_f6_001/623ba168c2c44/" alt="アクセスカウンター">番目の訪問者です
+        </center>
+        <!-- 最終更新 -->
+        <center>
+          <marquee>
           <table>
             <tbody>
               <tr>
@@ -42,170 +79,186 @@
               </tr>
             </tbody>
           </table>
-        </marquee>
-      </center>
-      <br>
-    </header>
-  </div>
-  <div>
-    <!-- このホームページについてリンク -->
-    <table width="100%" border="1">
-      <tbody>
-        <tr style="background-color: skyblue;">
-          <td>
-            <center> <img src="/img/welcome.gif" alt="welcome" height="35"><br>
-              <a href="about.html"><i>このホームページについて</i></a>
-            </center>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <!-- リンク -->
-    <table style="table-layout: fixed;" width="100%" border="1" bgcolor="#ccccff">
-      <tbody style="background-color: pink;">
-        <tr>
-          <td bgcolor="#ccccff"> <a href="articles/computer/index.html"> <img src="/img/icon/pc.gif" alt="●" height="30"> コンピューター
-              関係</a><br>
-          </td>
-          <td bgcolor="#ccccff"> <a href="articles/travel/index.html"> <img src="/img/icon/train.gif" alt="●" height="30"> 旅行の記録
-            </a><br>
-          </td>
-        </tr>
-        <tr>
-          <td bgcolor="#ccccff"> <a href="https://blog.kat0h.com"> <img src="/img/icon/blog.gif" alt="●" height="30">
-              ブログ </a>
-            <font size="-1"><br>
-            </font>
-          </td>
-          <td bgcolor="#ccccff"> <a href="https://scrapbox.io/kat0h">
-              <img src="/img/icon/scrap.gif" alt="●" height="30">
-              Scrapbox (外部サイト) </a>
-            <font size="-1"><br>
-            </font>
-          </td>
-        </tr>
-        <tr>
-          <td valign="top" bgcolor="#ccccff">日記: <a moz-do-not-send="true"
-              href="https://kat0h.hateblo.jp">https://kat0h.hateblo.jp</a><br>
-          </td>
-          <td valign="top" bgcolor="#ccccff">
-            <a href="/app.html">アプリ</a>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <table width="100%" border="1" bgcolor="#663366">
-      <tbody>
-        <tr style="background-color:rgb(188, 188, 188)">
-          <td> 記事
-            <!-- ここに記事のリンクを貼り付けていく -->
-            <ul>
-              <li>
-                <a href="/articles/2023_12_13_vimconf">Vim conf Tiny 参加記</a>
-              </li>
-              <li>
-                <a href="/articles/2023_11_07_menkyo.html">自動車免許を取りたい</a>
-              </li>
-              <li>
-                <a href="/articles/2023_01_04_ssd.html">ポータブルSSDを購入した</a>
-              </li>
-              <li>
-                <a href="/articles/n23.html">2023年年賀状 (2023-01-01)</a>
-              </li>
-              <li>
-                <a href="/articles/2022_12_20_uec_kifu.html">電気通信大学から来た寄附のお礼状</a>
-              </li>
-            </ul>
-
-            <!-- -->
-            <ul>
-              <li>
-                <a href="/articles/2022_05_00_pan/">パン を焼いてみた日記<br></a>
-              </li>
-              <li>
-                <a href="/articles/2022_06_07_tokyo_no_yaban.html">東京の野蛮 収録曲 データ</a>
-              </li>
-              <li>
-                <a href="/articles/2022_06_04_kesihan/">消しゴムハンコ 作品展示スペース<br></a>
-              </li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <td valign="top" bgcolor="#99ff99">近況<br>
-            2023/03/02<br>
-            高校を卒業しました
-            2023/02/11<br>
-            東京に出かけていました。おひとり様Mastodon鯖準備中。
-            2022/12/22<br>
-            大学入学手続き完了！<br>
-            <br>
-            2022/12/17<br>
-            某国立大学から<a href="/articles/uec_kifu_2022_12.html">寄付のお礼</a>をいただきました。<br>
-            <br>
-            2022/11/02<br>
-            某国立大学に合格しました<br>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <table style="table-layout: fixed;" width="100%" border="1">
-      <tbody style="background-color:greenyellow;">
-        <tr>
-          <td bgcolor="#ffcc66"> <img src="/img/icon/link.gif" alt="●" height="30">リンク<br>
-            <font size="-1"> 自分のアカウントなど<br>
-            </font>
-            <ul>
-              <li><a href="https://github.com/kat0h">Github @kat0h</a><br>
-              </li>
-              <li><a href="https://scrapbox.io/kat0h">Scrapbox @kat0h</a><br>
-              </li>
-              <li><a href="https://zenn.dev/kato_k">Zenn @kato_k</a></li>
-              <li>日記 <a moz-do-not-send="true" href="https://kat0h.hateblo.jp">https://kat0h.hateblo.jp</a><br>
-              </li>
-              <li>Mail: bWVAa2F0MGguY29t (base64)</li>
-            </ul>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <table width="100%" border="1" bgcolor="#ff6600">
-      <tbody style="background-color: yellow">
-        <tr>
-          <td>
-            このサイトは最新版のGoogle Chrome、Apple Safari、Mozilla Firefoxで表示を確認しています。<br>
-            CSS/Javascriptがオフになっている場合は一部のページ要素がうまく表示されない場合があります。<br>
-            また、モニターはVGA以上、カラーモード24bitでの表示を想定しています。<br>
-            スマートフォンでの表示はテストしていませんので。ご了承ください。
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <!-- ページの最後 -->
-    <center>
-      <table width="100%" cellspacing="2" cellpadding="2" border="1">
+          </marquee>
+        </center>
+        <br>
+      </header>
+    </div>
+    <div>
+      <!-- このホームページについてリンク -->
+      <table width="100%" border="1">
         <tbody>
-          <tr>
-            <td valign="top" bgcolor="#ffccff">★ 更新履歴<br>
-              2023/03/02<br>
-              日付の間違いをこっそり修正
-              2022/11/21<br>
-              ページを微調整しました<br>
-              2022/08/07<br>
-              はてぶろのリンクを作成しました！<br>
-              <br>
+          <tr style="background-color: skyblue;">
+            <td>
+              <center> <img src="/img/welcome.gif" alt="welcome" height="35"><br>
+                <a href="about.html"><i>このホームページについて</i></a>
+              </center>
             </td>
           </tr>
         </tbody>
       </table>
-      <br>
-      <img src="/img/top/2_2.gif" alt="" width="50"> <img src="/img/kouji.gif" width="50"> <br>
-      <font size="5">永遠に工事中</font>
-    </center>
-  </div>
-  <div>
-    <center> 2022 <a href="https://twitter.com/kat0h" moz-do-not-send="true">@kat0h</a> </center>
-  </div>
-</body>
+      <!-- リンク -->
+      <table style="table-layout: fixed;" width="100%" border="1" bgcolor="#ccccff">
+        <tbody style="background-color: pink;">
+          <tr>
+            <td bgcolor="#ccccff"> <a href="articles/computer/index.html"> <img src="/img/icon/pc.gif" alt="●" height="30"> コンピューター
+                関係</a><br>
+            </td>
+            <td bgcolor="#ccccff"> <a href="articles/travel/index.html"> <img src="/img/icon/train.gif" alt="●" height="30"> 旅行の記録
+              </a><br>
+            </td>
+          </tr>
+          <tr>
+            <td bgcolor="#ccccff"> <a href="https://blog.kat0h.com"> <img src="/img/icon/blog.gif" alt="●" height="30">
+                ブログ </a>
+              <font size="-1"><br>
+              </font>
+            </td>
+            <td bgcolor="#ccccff"> <a href="https://scrapbox.io/kat0h">
+                <img src="/img/icon/scrap.gif" alt="●" height="30">
+                Scrapbox (外部サイト) </a>
+              <font size="-1"><br>
+              </font>
+            </td>
+          </tr>
+          <tr>
+            <td valign="top" bgcolor="#ccccff">日記: <a moz-do-not-send="true"
+                                                        href="https://kat0h.hateblo.jp">https://kat0h.hateblo.jp</a><br>
+            </td>
+            <td valign="top" bgcolor="#ccccff">
+              <a href="/app.html">アプリ</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <table width="100%" border="1" bgcolor="#663366">
+        <tbody>
+          <tr style="background-color:rgb(188, 188, 188)">
+            <td> 記事
+              <!-- ここに記事のリンクを貼り付けていく -->
+              <ul>
+                <li>
+                  <a href="/articles/2023_12_13_vimconf">Vim conf Tiny 参加記</a>
+                </li>
+                <li>
+                  <a href="/articles/2023_11_07_menkyo.html">自動車免許を取りたい</a>
+                </li>
+                <li>
+                  <a href="/articles/2023_01_04_ssd.html">ポータブルSSDを購入した</a>
+                </li>
+                <li>
+                  <a href="/articles/n23.html">2023年年賀状 (2023-01-01)</a>
+                </li>
+                <li>
+                  <a href="/articles/2022_12_20_uec_kifu.html">電気通信大学から来た寄附のお礼状</a>
+                </li>
+              </ul>
+
+              <!-- -->
+              <ul>
+                <li>
+                  <a href="/articles/2022_05_00_pan/">パン を焼いてみた日記<br></a>
+                </li>
+                <li>
+                  <a href="/articles/2022_06_07_tokyo_no_yaban.html">東京の野蛮 収録曲 データ</a>
+                </li>
+                <li>
+                  <a href="/articles/2022_06_04_kesihan/">消しゴムハンコ 作品展示スペース<br></a>
+                </li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td valign="top" bgcolor="#99ff99">近況<br>
+              2023/03/02<br>
+              高校を卒業しました
+              2023/02/11<br>
+              東京に出かけていました。おひとり様Mastodon鯖準備中。
+              2022/12/22<br>
+              大学入学手続き完了！<br>
+              <br>
+              2022/12/17<br>
+              某国立大学から<a href="/articles/uec_kifu_2022_12.html">寄付のお礼</a>をいただきました。<br>
+              <br>
+              2022/11/02<br>
+              某国立大学に合格しました<br>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <table style="table-layout: fixed;" width="100%" border="1">
+        <tbody style="background-color:greenyellow;">
+          <tr>
+            <td bgcolor="#ffcc66"> <img src="/img/icon/link.gif" alt="●" height="30">リンク<br>
+              <font size="-1"> 自分のアカウントなど<br>
+              </font>
+              <ul>
+                <li><a href="https://github.com/kat0h">Github @kat0h</a><br>
+                </li>
+                <li><a href="https://scrapbox.io/kat0h">Scrapbox @kat0h</a><br>
+                </li>
+                <li><a href="https://zenn.dev/kato_k">Zenn @kato_k</a></li>
+                <li>日記 <a moz-do-not-send="true" href="https://kat0h.hateblo.jp">https://kat0h.hateblo.jp</a><br>
+                </li>
+                <li>Mail: bWVAa2F0MGguY29t (base64)</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td bgcolor="#fdeff2"> <img src="/img/icon/link.gif" alt="●" height="30"><img src="/img/icon/link.gif" alt="●" height="30"><img src="/img/icon/link.gif" alt="●" height="30"><img src="/img/icon/link.gif" alt="●" height="30">リンク<br>
+              <font size="-1">みんなのホームページコーナー</font><br>
+              <a href="https://sevenc7c.com/"><img src="./img/links/nanashi.png" alt="名無し｡/Nanashi." id="linkcard"></a>
+              <a href="https://laddge.net/"><img src="./img/links/laddge.png" alt="Laddge" id="linkcard"></a>
+              <a href="https://ryoppippi.com/"><img src="./img/links/ryoppippi.png" alt="ryoppippi" id="linkcard"></a>
+              <a href="https://shinbunbun.info/"><img src="./img/links/shunbunbun.png" alt="shinbunbun" id="linkcard"></a>
+              <a href="https://re-taro.dev/"><img src="./img/links/re-taro.png" alt="re-taro" id="linkcard"></a>
+              <a href="https://mcbeeringi.github.io/"><img src="./img/links/eringi.png" alt="eringi" id="linkcard"></a>
+              <a href="https://comamoca.dev/"><img src="./img/links/comamoca.png" alt="comamoca" id="linkcard"></a>
+              <!-- <a href=""><img src="./img/links/.png" alt="" id="linkcard"></a> -->
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <table width="100%" border="1" bgcolor="#ff6600">
+        <tbody style="background-color: yellow">
+          <tr>
+            <td>
+              このサイトは最新版のGoogle Chrome、Apple Safari、Mozilla Firefoxで表示を確認しています。<br>
+              CSS/Javascriptがオフになっている場合は一部のページ要素がうまく表示されない場合があります。<br>
+              また、モニターはVGA以上、カラーモード24bitでの表示を想定しています。<br>
+              スマートフォンでの表示はテストしていませんので。ご了承ください。
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <!-- ページの最後 -->
+      <center>
+        <table width="100%" cellspacing="2" cellpadding="2" border="1">
+          <tbody>
+            <tr>
+              <td valign="top" bgcolor="#ffccff">★ 更新履歴<br>
+                2023/03/02<br>
+                日付の間違いをこっそり修正
+                2022/11/21<br>
+                ページを微調整しました<br>
+                2022/08/07<br>
+                はてぶろのリンクを作成しました！<br>
+                <br>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <td><img src="/img/top/i-may009.gif" alt=""></td>
+        <td><img src="/img/top/i-may009.gif" alt=""></td>
+        <img src="/img/top/2_2.gif" alt="" width="50"> <img src="/img/kouji.gif" width="50"> 
+        <td><img src="/img/top/i-may009.gif" alt=""></td>
+        <td><img src="/img/top/i-may009.gif" alt=""></td>
+      </center>
+    </div>
+    <div>
+      <center> 2022 <a href="https://twitter.com/kat0h" moz-do-not-send="true">@kat0h</a> </center>
+    </div>
+  </body>
 
 </html>
