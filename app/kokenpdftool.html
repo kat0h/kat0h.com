@@ -3,7 +3,7 @@
   <head>
     <script type='module'>
       import pdfobject from 'https://cdn.jsdelivr.net/npm/pdfobject@2.3.1/+esm';
-      import {PDFDocument} from 'https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/+esm'
+      import {PDFDocument,rgb} from 'https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/+esm'
       const $=id=>document.getElementById(id);
       const input=$('selectfile');
       const loadlocalfile=async()=>{
@@ -14,6 +14,7 @@
           o.value=i;o.textContent=f.name;select.appendChild(o);
         });
         if(input.files.length>0)pdfobject.embed(URL.createObjectURL(input.files[0]),'#pdfv-1');
+        select.selectedIndex=0;
       };
       await loadlocalfile();
       $('selectfile').addEventListener('change',loadlocalfile);
@@ -22,13 +23,24 @@
       });
       $('join').addEventListener('click',async ()=>{
         const merged=await PDFDocument.create();
-        for await (const f of Array.from($('coverfile').files)){
+        const font=await merged.embedFont('Helvetica');
+        for await(const f of Array.from($('coverfile').files)){
           const p=await PDFDocument.load(await f.arrayBuffer());
           (await merged.copyPages(p,p.getPageIndices())).forEach(pg=>merged.addPage(pg));
         }
-        for await (const f of Array.from(input.files)){
+        var pageidx=4;const idxsize=12;
+        for await (const f of Array.from(input.files)){//join pages
           const p=await PDFDocument.load(await f.arrayBuffer());
-          (await merged.copyPages(p,p.getPageIndices())).forEach(pg=>merged.addPage(pg));
+          (await merged.copyPages(p,p.getPageIndices())).forEach(pg=>{
+            const {width,height}=pg.getSize();
+            const txt=`${pageidx}`;
+            pg.drawText(txt,{
+              x:width/2-(font.widthOfTextAtSize(txt,idxsize)/2),
+              y:20,size:idxsize,font,color:rgb(0,0,0),
+            });
+            merged.addPage(pg);
+            pageidx+=1;
+          });
         }
         pdfobject.embed(URL.createObjectURL(new Blob([await merged.save()],{type:'application/pdf'})),'#result-pdfv');
       });
