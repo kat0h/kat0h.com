@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ja" dir="">
+  <head>
+    <script type='module'>
+      import pdfobject from 'https://cdn.jsdelivr.net/npm/pdfobject@2.3.1/+esm';
+      import {PDFDocument} from 'https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/+esm'
+      const $=id=>document.getElementById(id);
+      const input=$('selectfile');
+      const loadlocalfile=async()=>{
+        if(input.files.length<0)return;
+        const select=$('selectedfiles');
+        Array.from(input.files).forEach((f,i)=>{
+          const o=document.createElement('option');
+          o.value=i;o.textContent=f.name;select.appendChild(o);
+        });
+        if(input.files.length>0)pdfobject.embed(URL.createObjectURL(input.files[0]),'#pdfv-1');
+      };
+      await loadlocalfile();
+      $('selectfile').addEventListener('change',loadlocalfile);
+      $('selectedfiles').addEventListener('change',e=>{
+        pdfobject.embed(URL.createObjectURL(input.files[e.target.value]),'#pdfv-1');
+      });
+      $('join').addEventListener('click',async ()=>{
+        const merged=await PDFDocument.create();
+        for await (const f of Array.from($('coverfile').files)){
+          const p=await PDFDocument.load(await f.arrayBuffer());
+          (await merged.copyPages(p,p.getPageIndices())).forEach(pg=>merged.addPage(pg));
+        }
+        for await (const f of Array.from(input.files)){
+          const p=await PDFDocument.load(await f.arrayBuffer());
+          (await merged.copyPages(p,p.getPageIndices())).forEach(pg=>merged.addPage(pg));
+        }
+        pdfobject.embed(URL.createObjectURL(new Blob([await merged.save()],{type:'application/pdf'})),'#result-pdfv');
+      });
+      $('coverfile').addEventListener('change',(t)=>{
+        if(t.target.files.length<=0)return;
+        pdfobject.embed(URL.createObjectURL(t.target.files[0]),'#coverpreview');
+      });
+      $('coverfile').dispatchEvent(new Event('change'));
+    </script>
+    <style>
+      body{background:#eeeeee;}
+      .pdfobject-container{height:700px;border:1px solid #ccc;}
+      .box{border:1px solid black;background-color:#aaaaaa;border-radius:5px;margin:5px;}
+      .box>*{margin:5px}
+    </style>
+  </head>
+  <body>
+    <!-- <h1>部報pdf作成ツール</h1> -->
+    <div id='view'>
+      <div class='box'>
+        <div>表紙ファイルを選択: <input id='coverfile' type='file' accept='.pdf'></div>
+        <div id='coverpreview'>未選択</div>
+      </div>
+      <div class='box'>
+        <div>
+          部報PDFファイルを選択: <input id='selectfile' type='file' accept='.pdf' multiple>
+          プレビュー: <select id='selectedfiles'></select>
+        </div>
+        <div id='pdfv-1'>未選択</div>
+      </div>
+      <div class='box'>
+        <button id='join'>結合</button>
+        <div id='result-pdfv'>未生成</div>
+      </div>
+    </div>
+  </body>
+</html>
+
