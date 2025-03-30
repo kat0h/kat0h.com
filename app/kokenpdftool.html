@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja" dir="">
   <head>
+    <meta charset="UTF-8">
     <script type='module'>
       import pdfobject from 'https://cdn.jsdelivr.net/npm/pdfobject@2.3.1/+esm';
       import {PDFDocument,rgb} from 'https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/+esm'
@@ -17,6 +18,7 @@
         if(input.files.length>0)pdfobject.embed(URL.createObjectURL(input.files[0]),'#pdfv-1');
         select.selectedIndex=0;
       };
+      const updateStatus=(text)=>$('result-pdfv').innerText=`${text}`;
       await loadlocalfile();
       $('selectfile').addEventListener('change',loadlocalfile);
       $('selectedfiles').addEventListener('change',e=>{
@@ -24,7 +26,7 @@
       });
       $('join').addEventListener('click',async ()=>{
         try{
-          $('result-pdfv').innerText=`処理中...`;
+          updateStatus(`処理中:PDF結合`);
           const merged=await PDFDocument.create();
           const font=await merged.embedFont('Helvetica');
           let pageidx=1;
@@ -51,7 +53,7 @@
           for(const _ of Array.from({length:(4-(merged.getPages().length+1)%4)%4}))await joinPage(merged,$('whitepagefile').files[0],false);
           await joinPage(merged,$('backcoverfile').files[0],false);
           pdfobject.embed(URL.createObjectURL(new Blob([await merged.save()],{type:'application/pdf'})),'#result-pdfv');
-        }catch(err){$('result-pdfv').innerText=`${err}`;}
+        }catch(err){updateStatus(err);}
       });
       ['cover','whitepage','backcover','index'].forEach(i=>{
         $(`${i}file`).addEventListener('change',(t)=>{
@@ -87,7 +89,10 @@
     </style>
   </head>
   <body>
-    <!-- <h1>部報pdf作成ツール</h1> -->
+    <h1>部報pdf作成ツール</h1>
+    <code>
+      gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/printer -dNOPAUSE -dQU -dBATCH -sOutputFile=out.pdf ./in.pdf
+    </code>
     <div id='view'>
       <div style='display: grid;grid-template-columns:repeat(4,1fr);height:800px;'>
         <div class='box'>
