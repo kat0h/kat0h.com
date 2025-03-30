@@ -9,6 +9,7 @@
       const loadlocalfile=async()=>{
         if(input.files.length<0)return;
         const select=$('selectedfiles');
+        select.selectedIndex=-1;
         Array.from(input.files).forEach((f,i)=>{
           const o=document.createElement('option');
           o.value=i;o.textContent=f.name;select.appendChild(o);
@@ -22,60 +23,103 @@
         pdfobject.embed(URL.createObjectURL(input.files[e.target.value]),'#pdfv-1');
       });
       $('join').addEventListener('click',async ()=>{
-        const merged=await PDFDocument.create();
-        const font=await merged.embedFont('Helvetica');
-        for await(const f of Array.from($('coverfile').files)){
-          const p=await PDFDocument.load(await f.arrayBuffer());
-          (await merged.copyPages(p,p.getPageIndices())).forEach(pg=>merged.addPage(pg));
-        }
-        var pageidx=4;const idxsize=12;
-        for await (const f of Array.from(input.files)){//join pages
-          const p=await PDFDocument.load(await f.arrayBuffer());
-          (await merged.copyPages(p,p.getPageIndices())).forEach(pg=>{
-            const {width,height}=pg.getSize();
-            const txt=`${pageidx}`;
-            pg.drawText(txt,{
-              x:width/2-(font.widthOfTextAtSize(txt,idxsize)/2),
-              y:20,size:idxsize,font,color:rgb(0,0,0),
+        try{
+          $('result-pdfv').innerText=`処理中...`;
+          const merged=await PDFDocument.create();
+          const font=await merged.embedFont('Helvetica');
+          let pageidx=1;
+          const joinPage=async(a,b,useIndex)=>{
+            const idxsize=12;
+            const p=await PDFDocument.load(await b.arrayBuffer());
+            (await merged.copyPages(p,p.getPageIndices())).forEach(pg=>{
+              if(useIndex){
+                const {width,height}=pg.getSize();
+                const txt=`${pageidx}`;
+                pg.drawText(txt,{
+                  x:width/2-(font.widthOfTextAtSize(txt,idxsize)/2),
+                  y:20,size:idxsize,font,color:rgb(0,0,0),
+                });
+                pageidx+=1;
+              }
+              a.addPage(pg);
             });
-            merged.addPage(pg);
-            pageidx+=1;
-          });
-        }
-        pdfobject.embed(URL.createObjectURL(new Blob([await merged.save()],{type:'application/pdf'})),'#result-pdfv');
+          }
+          for await(const f of Array.from($('coverfile').files))await joinPage(merged,f,false);//表紙
+          await joinPage(merged,$('whitepagefile').files[0],false);
+          await joinPage(merged,$('indexfile').files[0],true);
+          for await(const f of Array.from(input.files))await joinPage(merged,f,true);
+          for(const _ of Array.from({length:(4-(merged.getPages().length+1)%4)%4}))await joinPage(merged,$('whitepagefile').files[0],false);
+          await joinPage(merged,$('backcoverfile').files[0],false);
+          pdfobject.embed(URL.createObjectURL(new Blob([await merged.save()],{type:'application/pdf'})),'#result-pdfv');
+        }catch(err){$('result-pdfv').innerText=`${err}`;}
       });
-      $('coverfile').addEventListener('change',(t)=>{
-        if(t.target.files.length<=0)return;
-        pdfobject.embed(URL.createObjectURL(t.target.files[0]),'#coverpreview');
-      });
-      $('coverfile').dispatchEvent(new Event('change'));
+      ['cover','whitepage','backcover','index'].forEach(i=>{
+        $(`${i}file`).addEventListener('change',(t)=>{
+          if(t.target.files.length<=0)return;
+          pdfobject.embed(URL.createObjectURL(t.target.files[0]),`#${i}preview`);
+        });
+        $(`${i}file`).dispatchEvent(new Event('change'));
+      })
     </script>
     <style>
       body{background:#eeeeee;}
-      .pdfobject-container{height:700px;border:1px solid #ccc;}
       .box{border:1px solid black;background-color:#aaaaaa;border-radius:5px;margin:5px;}
-      .box>*{margin:5px}
+      .box>*{margin:5px;}
+      .pdfobject-container{height:95%;}
+      @keyframes flashy-text {
+        0% { background-position: 0% 50%; text-shadow: 0 0 5px #ff0000, 0 0 10px #ff7300, 0 0 15px #ffeb00; }
+        25% { background-position: 25% 50%; text-shadow: 0 0 5px #ffeb00, 0 0 10px #47ff00, 0 0 15px #00ff91; }
+        50% { background-position: 50% 50%; text-shadow: 0 0 5px #00ffff, 0 0 10px #0047ff, 0 0 15px #9100ff; }
+        75% { background-position: 75% 50%; text-shadow: 0 0 5px #ff00ff, 0 0 10px #ff0073, 0 0 15px #ff0000; }
+        100% { background-position: 100% 50%; text-shadow: 0 0 5px #ff0000, 0 0 10px #ff7300, 0 0 15px #ffeb00; }
+      }
+      #result-pdfv {
+        font-size: 3rem;
+        font-weight: bold;
+        text-transform: uppercase;
+        background: linear-gradient(90deg, #ff0000, #ff7300, #ffeb00, #47ff00, #00ff91, #00ffff, #0047ff, #9100ff, #ff00ff, #ff0073, #ff0000);
+        background-size: 300% 300%;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: flashy-text 3s infinite linear;
+        text-align: center;
+      }
     </style>
   </head>
   <body>
     <!-- <h1>部報pdf作成ツール</h1> -->
     <div id='view'>
-      <div class='box'>
-        <div>表紙ファイルを選択: <input id='coverfile' type='file' accept='.pdf'></div>
-        <div id='coverpreview'>未選択</div>
-      </div>
-      <div class='box'>
-        <div>
-          部報PDFファイルを選択: <input id='selectfile' type='file' accept='.pdf' multiple>
-          プレビュー: <select id='selectedfiles'></select>
+      <div style='display: grid;grid-template-columns:repeat(4,1fr);height:800px;'>
+        <div class='box'>
+          <div>表紙ファイルを選択: <input id='coverfile' type='file' accept='.pdf'></div>
+          <div id='coverpreview' >未選択</div>
         </div>
-        <div id='pdfv-1'>未選択</div>
+        <div class='box'>
+          <div>白紙ファイルを選択: <input id='whitepagefile' type='file' accept='.pdf'></div>
+          <div id='whitepagepreview' >未選択</div>
+        </div>
+        <div class='box'>
+          <div>裏表紙ファイルを選択: <input id='backcoverfile' type='file' accept='.pdf'></div>
+          <div id='backcoverpreview' >未選択</div>
+        </div>
+        <div class='box'>
+          <div>目次ファイルを選択: <input id='indexfile' type='file' accept='.pdf'></div>
+          <div id='indexpreview' >未選択</div>
+        </div>
       </div>
-      <div class='box'>
-        <button id='join'>結合</button>
-        <div id='result-pdfv'>未生成</div>
+      <div style='display: grid;grid-template-columns:repeat(2,1fr);height:800px;'>
+        <div class='box'>
+          <div>
+            部報PDFファイルを選択: <input id='selectfile' type='file' accept='.pdf' multiple>
+            プレビュー: <select id='selectedfiles'></select>
+          </div>
+          <div id='pdfv-1' >未選択</div>
+        </div>
+        <div class='box'>
+          <div><button id='join'>結合</button></div>
+          <div id='result-pdfv'>未生成</div>
+        </div>
       </div>
     </div>
   </body>
 </html>
-
